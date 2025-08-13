@@ -9,8 +9,9 @@ console.log('📍 Current directory:', process.cwd());
 console.log('📁 Files in current directory:', fs.readdirSync('.'));
 
 // Set PORT from environment or default
-const PORT = process.env.PORT || 10000;
+const PORT = parseInt(process.env.PORT) || 10000;
 console.log('🔌 Using PORT:', PORT);
+console.log('🔌 PORT type:', typeof PORT);
 
 // Try to load the main app from different possible locations
 let app;
@@ -55,6 +56,7 @@ const server = app.listen(PORT, '0.0.0.0', () => {
   console.log(`📡 Server URL: http://0.0.0.0:${PORT}`);
   console.log(`🌐 Public URL: https://juria-ai-project.onrender.com`);
   console.log(`⏰ Started at: ${new Date().toISOString()}`);
+  console.log(`🔌 Server listening on port ${PORT} (type: ${typeof PORT})`);
 });
 
 // Handle graceful shutdown
