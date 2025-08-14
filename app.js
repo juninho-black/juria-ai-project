@@ -4,7 +4,7 @@ const multer = require('multer');
 const { supabase } = require('./lib/supabase');
 
 // WhatsApp Bot Integration
-const WhatsAppBot = require('./services/whatsappBot');
+const WhatsAppBot = require('./whatsappBot');
 let whatsappBot = null;
 const agentsRouter = require('./routes/agents');
 const authRouter = require('./routes/auth');
