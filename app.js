@@ -17,6 +17,17 @@ app.use(cors({ origin: '*'}));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
+// Root route
+app.get('/', (_req, res) => {
+  res.json({ 
+    message: 'JurIA Backend API', 
+    status: 'running',
+    version: '1.0.0',
+    time: new Date().toISOString(),
+    endpoints: ['/api/health', '/api/auth', '/api/cases', '/api/documents', '/api/calendar', '/api/notifications']
+  });
+});
+
 // Health
 app.get('/api/health', (_req, res) => {
   res.json({ ok: true, time: new Date().toISOString() });
