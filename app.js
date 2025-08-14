@@ -2,6 +2,10 @@ const express = require('express');
 const cors = require('cors');
 const multer = require('multer');
 const { supabase } = require('./lib/supabase');
+
+// WhatsApp Bot Integration
+const WhatsAppBot = require('./services/whatsappBot');
+let whatsappBot = null;
 const agentsRouter = require('./routes/agents');
 const authRouter = require('./routes/auth');
 const casesRouter = require('./routes/cases');
@@ -32,6 +36,21 @@ app.get('/', (_req, res) => {
 app.get('/api/health', (_req, res) => {
   res.json({ ok: true, time: new Date().toISOString() });
 });
+
+// WhatsApp Bot Status
+app.get('/api/bot/status', (_req, res) => {
+  const status = whatsappBot ? whatsappBot.getStatus() : { isReady: false, activeUsers: 0 };
+  res.json({ 
+    bot: status,
+    message: status.isReady ? 'Bot conectado e funcionando' : 'Bot inicializando ou desconectado'
+  });
+});
+
+// Initialize WhatsApp Bot
+if (process.env.NODE_ENV === 'production' || process.env.ENABLE_WHATSAPP_BOT === 'true') {
+  console.log('🤖 Inicializando WhatsApp Bot...');
+  whatsappBot = new WhatsAppBot();
+}
 
 // Upload de documentos para Supabase Storage (bucket)
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: Number(process.env.MAX_FILE_SIZE || 10 * 1024 * 1024) } });
