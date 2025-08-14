@@ -46,10 +46,12 @@ app.get('/api/bot/status', (_req, res) => {
   });
 });
 
-// Initialize WhatsApp Bot
-if (process.env.NODE_ENV === 'production' || process.env.ENABLE_WHATSAPP_BOT === 'true') {
+// Initialize WhatsApp Bot (Disabled on Render due to session persistence issues)
+if (process.env.ENABLE_WHATSAPP_BOT === 'true' && process.env.NODE_ENV !== 'production') {
   console.log('🤖 Inicializando WhatsApp Bot...');
   whatsappBot = new WhatsAppBot();
+} else {
+  console.log('🤖 WhatsApp Bot desabilitado no ambiente de produção');
 }
 
 // Upload de documentos para Supabase Storage (bucket)
